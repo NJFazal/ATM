@@ -23,21 +23,26 @@ const Account = () => {
   const handleChange = (event) => {
     console.log(Number(event.target.value));
     if (Number(event.target.value) <= 0) {
-      return setValidTransaction(false); 
-    };
+      return setValidTransaction(false);
+    }
     if (atmMode === 'Cash Back' && Number(event.target.value) > totalState) {
-      setValidTransaction(false);
+      setValidTransaction(false)
+      alert('Insufficient Funds');
     } else {
-      setValidTransaction(true);
-    };
+      setValidTransaction(true)
+      ;
+  
+    }
     setDeposit(Number(event.target.value));
-    //handleChange = Math.max(0, event.target.value - 1);
+  
   };
   const handleSubmit = (event) => {
     let newTotal = isDeposit ? totalState + deposit : totalState - deposit;
     setTotalState(newTotal);
     setValidTransaction(false);
     event.preventDefault();
+    return alert('Deposited!');
+    
   };
 
   const handleModeSelect = (event) => {
@@ -55,11 +60,16 @@ const Account = () => {
     <form onSubmit={handleSubmit}>
       <>
         <h2 id="total">{status}</h2>
-        <form onSubmit={handleSubmit}>
-      <ATMDeposit onChange={handleChange} isDeposit={isDeposit}></ATMDeposit>
-    </form>
-        <button onClick={() => setIsDeposit(true)}>Deposit</button>
-        <button onClick={() => setIsDeposit(false)}>Cash Back</button>
+        <label>Select an action below to continue ! </label>
+        <select onChange={(e) => handleModeSelect(e)} name="mode" id="mode-select">
+          <option id="no-selection" value=""></option>
+          <option id="deposit-selection" value="Deposit">
+            Deposit
+          </option>
+          <option id="cashback-selection" value="Cash Back">
+            Cash Back
+          </option>
+        </select>
         {atmMode && (
           <ATMDeposit
             onChange={handleChange}
